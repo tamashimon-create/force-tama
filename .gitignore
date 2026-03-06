@@ -21,6 +21,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# work files
+*.tmp
+temp_*
+
 # Dependency directories
 node_modules/
 
