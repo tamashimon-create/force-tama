@@ -58,3 +58,6 @@ $RECYCLE.BIN/
 # sf-tools
 sf-start.sh
 sf-restart.sh
+
+# Claude Code
+.claude/
