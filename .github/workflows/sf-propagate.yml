@@ -1,0 +1,63 @@
+# ==============================================================================
+# ワークフロー名: Propagate Changes
+# 概要: main ブランチへの PR マージをトリガーに、
+#       main → staging → development へ変更を伝播する
+#
+# 【注意】sf-metasync.sh による直接 push では発火しない（PR マージ時のみ）。
+#         Salesforce メタデータの同期伝播は sf-metasync.sh が担う。
+# ==============================================================================
+name: Propagate Changes
+
+# ------------------------------------------------------------------------------
+# 実行トリガーの設定
+# ------------------------------------------------------------------------------
+on:
+  # main への PR がマージされたときのみ発火
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+  # 手動実行の許可
+  workflow_dispatch:
+
+# ブランチへの push 権限を付与
+permissions:
+  contents: write
+
+# ------------------------------------------------------------------------------
+# ジョブの定義
+# ------------------------------------------------------------------------------
+jobs:
+  propagate:
+    # PR マージ時のみ実行
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: 完全な履歴でチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 2: git ユーザー設定
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Step 3: main → staging へ伝播
+      - name: Propagate main to staging
+        run: |
+          git checkout staging
+          git merge origin/main --no-edit
+          git push origin staging
+
+      # Step 4: staging → development へ伝播
+      - name: Propagate staging to development
+        run: |
+          git checkout development
+          git merge origin/staging --no-edit
+          git push origin development
