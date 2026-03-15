@@ -36,7 +36,7 @@ jobs:
     steps:
       # Step 1: リポジトリのソースコードをランナー環境にチェックアウト（取得）する
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # 同期対象の基準となるブランチを指定
           ref: main
@@ -46,13 +46,13 @@ jobs:
 
       # Step 2: Salesforce CLI を動かすための Node.js 環境を構築
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20" # 安定稼働実績のあるバージョン20を指定
 
       # Step 3: Salesforce Git Delta (SGD) プラグインを動かすための Java 環境を構築
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "temurin" # オープンソースで標準的なTemurinディストリビューション
           java-version: "17" # SGDの実行推奨要件を満たすバージョン17を指定

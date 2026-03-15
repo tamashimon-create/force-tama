@@ -68,7 +68,7 @@ jobs:
 
       # Step 2: リポジトリのソースコードをランナー環境にチェックアウト（取得）する
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.base.ref || github.ref_name }}
           # sf-release.sh がブランチ名を git symbolic-ref で取得するため、完全な履歴を取得する
@@ -76,7 +76,7 @@ jobs:
 
       # Step 3: Salesforce CLI を動かすための Node.js 環境を構築
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
