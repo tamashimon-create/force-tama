@@ -43,5 +43,5 @@ jobs:
           if git merge-base --is-ancestor origin/$FEATURE origin/$PREV; then
             echo "::notice title=プロモーション順序OK::✓ ${FEATURE} は ${PREV} にマージ済みです"
           else
-            echo "::warning title=プロモーション順序未確認::⚠ ${FEATURE} は ${PREV} にまだマージされていません。意図的な場合はそのまま進めてください。"
+            echo "::error title=⚠ プロモーション順序未確認::${FEATURE} は ${PREV} にまだマージされていません。意図的な場合はそのまま進めてください。"
           fi
